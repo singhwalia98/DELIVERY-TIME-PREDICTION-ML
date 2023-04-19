@@ -77,12 +77,20 @@ class DataTransformation:
             preprocessing_obj = self.get_data_transformation_object()
 
             target_column_name = 'Time_taken (min)'
+
+            ## Assigning the feature names to an object which needs to be dropped. 
             drop_columns = [target_column_name,'Delivery_person_ID', 'ID', 'Order_Date', 'Time_Orderd', 'Time_Order_picked']
 
+            ## Dropping features from Train data which aren't much relevant for the prediction. 
             input_feature_train_df = train_df.drop(columns=drop_columns,axis=1)
+
+            ## Specifying the target feature to the Model. 
             target_feature_train_df=train_df[target_column_name]
 
+            ## Dropping features from Test data which aren't much relevant for the prediction. 
             input_feature_test_df=test_df.drop(columns=drop_columns,axis=1)
+
+            ## Specifying the target feature to the Model. 
             target_feature_test_df=test_df[target_column_name]
             
             ## Transforming using preprocessor obj
@@ -95,11 +103,10 @@ class DataTransformation:
             train_arr = np.c_[input_feature_train_arr, np.array(target_feature_train_df)]
             test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
 
-            save_object(
-
-                file_path=self.data_transformation_config.preprocessor_obj_file_path,
-                obj=preprocessing_obj
-                )
+            ## Saving the transformed data into preprocessor.pkl file 
+            save_object(file_path=self.data_transformation_config.preprocessor_obj_file_path,
+                        obj=preprocessing_obj
+                        )
             
             logging.info('Preprocessing pickle file saved')
 
